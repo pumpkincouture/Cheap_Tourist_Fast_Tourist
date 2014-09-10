@@ -1,4 +1,6 @@
 require 'csv'
+require_relative 'find_flight'
+require_relative 'flight'
 
 class TravelFinder
 
@@ -11,7 +13,8 @@ class TravelFinder
   def find_flights!(file)
     get_info = get_flights(file)
     refine_data = delete_whitespace(get_info)
-    @flight_finder.find_cheap_flight(refine_data)
+    sort_list = @flight_finder.sort_by_cheap(refine_data)
+    @flight_finder.find_direct_flights(sort_list)
   end
 
   def get_flights(file)

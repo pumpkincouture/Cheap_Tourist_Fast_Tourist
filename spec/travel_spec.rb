@@ -1,9 +1,9 @@
-require_relative '../lib/travel_finder.rb'
-require_relative '../lib/flights.rb'
-require_relative 'spec_helper.rb'
+require '../lib/travel_finder.rb'
+require '../lib/flight.rb'
+require_relative 'spec_helper'
 
 describe "TravelFinder" do
-	list = './lib/sample-input.csv'
+	list = '../lib/sample-input.csv'
 	
 	before :each do 
 		@travel_finder = TravelFinder.new(@flight_finder)
