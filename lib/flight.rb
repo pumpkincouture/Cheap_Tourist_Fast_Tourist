@@ -18,6 +18,11 @@ class Flight
     @arrival.delete(":").to_i
   end
 
+  def convert_price
+    # new_price = @price.delete(".").to_i
+    @price.tr(',','').to_i 
+  end
+
   def find_duration
     @arrival - @departure
   end
@@ -38,8 +43,28 @@ class Flight
     @origin != "A" && @destination == "Z"
   end
 
+  def get_origin
+    @origin
+  end
+
+  def get_destination
+    @destination
+  end
+
+  def get_departure
+    @departure
+  end
+
+  def get_arrival
+    @arrival
+  end
+
+  def get_price
+    @price
+  end
+
   def get_duration
-    @duration
+    @duration 
   end
 
   def find_same_duration(other_flight)

@@ -27,55 +27,69 @@ describe "FindFlight" do
 		expect(@flight_finder.convert_time_to_integer(refine_data)[0].arrival).to eq(1000)
 	end
 
+	it "converts price into integers" do
+	  get_list = @travel_finder.get_flights(list)
+		refine_data = @travel_finder.delete_whitespace(get_list)
+		convert_time = @flight_finder.convert_time_to_integer(refine_data)
+
+		expect(@flight_finder.convert_price_to_integer(convert_time)[0].price).to eq(100)
+	end
+
 	it "finds all flight durations" do
 		get_list = @travel_finder.get_flights(list)
 		refine_data = @travel_finder.delete_whitespace(get_list)
-		converted_list = @flight_finder.convert_time_to_integer(refine_data)
+		convert_time = @flight_finder.convert_time_to_integer(refine_data)
+		convert_price = @flight_finder.convert_price_to_integer(convert_time)
 
-		expect(@flight_finder.find_all_durations(converted_list)[0].duration).to eq(100)
+		expect(@flight_finder.find_all_durations(convert_time)[0].duration).to eq(100)
 	end
 
 	it "returns direct flights" do
 		get_list = @travel_finder.get_flights(list)
 		refine_data = @travel_finder.delete_whitespace(get_list)
-		converted_list = @flight_finder.convert_time_to_integer(refine_data)
-		all_durations = @flight_finder.find_all_durations(converted_list)
+		convert_time = @flight_finder.convert_time_to_integer(refine_data)
+		convert_price = @flight_finder.convert_price_to_integer(convert_time)
+		all_durations = @flight_finder.find_all_durations(convert_price)
 
-		expect(@flight_finder.find_direct_flights(all_durations)[0].price).to eq("300.00")
+		expect(@flight_finder.find_direct_flights(all_durations)[0].price).to eq(300)
 	end
 
 	it "returns first leg of indirect flight" do
 		get_list = @travel_finder.get_flights(list)
 		refine_data = @travel_finder.delete_whitespace(get_list)
-		converted_list = @flight_finder.convert_time_to_integer(refine_data)
-		all_durations = @flight_finder.find_all_durations(converted_list)
+		convert_time = @flight_finder.convert_time_to_integer(refine_data)
+		convert_price = @flight_finder.convert_price_to_integer(convert_time)
+		all_durations = @flight_finder.find_all_durations(convert_price)
 		
-	  expect(@flight_finder.find_first_leg(all_durations)[0].price).to eq("100.00")		
+	  expect(@flight_finder.find_first_leg(all_durations)[0].price).to eq(100)		
 	end
 
 	it "returns second leg of indirect flight" do
 		get_list = @travel_finder.get_flights(list)
 		refine_data = @travel_finder.delete_whitespace(get_list)
-		converted_list = @flight_finder.convert_time_to_integer(refine_data)
-		all_durations = @flight_finder.find_all_durations(converted_list)
+		convert_time = @flight_finder.convert_time_to_integer(refine_data)
+		convert_price = @flight_finder.convert_price_to_integer(convert_time)
+		all_durations = @flight_finder.find_all_durations(convert_price)
 
-		expect(@flight_finder.find_second_leg(all_durations)[0].price).to eq("100.00")
+		expect(@flight_finder.find_second_leg(all_durations)).to eq([])
 	end
 
 	it "returns third leg of indirect flight" do
 		get_list = @travel_finder.get_flights(list)
 		refine_data = @travel_finder.delete_whitespace(get_list)
-		converted_list = @flight_finder.convert_time_to_integer(refine_data)
-		all_durations = @flight_finder.find_all_durations(converted_list)
+		convert_time = @flight_finder.convert_time_to_integer(refine_data)
+		convert_price = @flight_finder.convert_price_to_integer(convert_time)
+		all_durations = @flight_finder.find_all_durations(convert_price)
 
-	  expect(@flight_finder.find_third_leg(all_durations)[0].price).to eq("100.00")
+	  expect(@flight_finder.find_third_leg(all_durations)[0].price).to eq(100)
 	end
 
 	it "finds how many flights have the same duration" do
 		get_list = @travel_finder.get_flights(list)
 		refine_data = @travel_finder.delete_whitespace(get_list)
-		converted_list = @flight_finder.convert_time_to_integer(refine_data)
-		all_durations = @flight_finder.find_all_durations(converted_list)
+		convert_time = @flight_finder.convert_time_to_integer(refine_data)
+		convert_price = @flight_finder.convert_price_to_integer(convert_time)
+		all_durations = @flight_finder.find_all_durations(convert_price)
 		direct_flights = @flight_finder.find_direct_flights(all_durations)
 
 		expect(@flight_finder.check_direct_duration(direct_flights)).to eq(2)
@@ -84,8 +98,9 @@ describe "FindFlight" do
 	it "returns shortest direct flight" do
 		get_list = @travel_finder.get_flights(list)
 		refine_data = @travel_finder.delete_whitespace(get_list)
-		converted_list = @flight_finder.convert_time_to_integer(refine_data)
-		all_durations = @flight_finder.find_all_durations(converted_list)
+		convert_time = @flight_finder.convert_time_to_integer(refine_data)
+		convert_price = @flight_finder.convert_price_to_integer(convert_time)
+		all_durations = @flight_finder.find_all_durations(convert_price)
 		direct_flights = @flight_finder.find_direct_flights(all_durations)
 		direct_duration = @flight_finder.check_direct_duration(direct_flights)
 
@@ -95,8 +110,9 @@ describe "FindFlight" do
 	it "finds fastest first leg flight" do 
 		get_list = @travel_finder.get_flights(list)
 		refine_data = @travel_finder.delete_whitespace(get_list)
-		converted_list = @flight_finder.convert_time_to_integer(refine_data)
-		all_durations = @flight_finder.find_all_durations(converted_list)
+		convert_time = @flight_finder.convert_time_to_integer(refine_data)
+		convert_price = @flight_finder.convert_price_to_integer(convert_time)
+		all_durations = @flight_finder.find_all_durations(convert_price)
 		first_leg = @flight_finder.find_first_leg(all_durations)
 
 		expect(@flight_finder.fastest_first_leg(first_leg).duration).to eq(100)
@@ -105,55 +121,90 @@ describe "FindFlight" do
 	it "finds fastest second leg flight" do
 		get_list = @travel_finder.get_flights(list)
 		refine_data = @travel_finder.delete_whitespace(get_list)
-		converted_list = @flight_finder.convert_time_to_integer(refine_data)
-		all_durations = @flight_finder.find_all_durations(converted_list)
+		convert_time = @flight_finder.convert_time_to_integer(refine_data)
+		convert_price = @flight_finder.convert_price_to_integer(convert_time)
+		all_durations = @flight_finder.find_all_durations(convert_price)
 		second_leg = @flight_finder.find_second_leg(all_durations)
-
-		expect(@flight_finder.fastest_second_leg(second_leg).duration).to eq(200)
+	
+		expect(@flight_finder.fastest_second_leg(second_leg)).to eq([])
 	end
 
   it "finds fastest third leg flight" do
 		get_list = @travel_finder.get_flights(list)
 		refine_data = @travel_finder.delete_whitespace(get_list)
-		converted_list = @flight_finder.convert_time_to_integer(refine_data)
-		all_durations = @flight_finder.find_all_durations(converted_list)
+		convert_time = @flight_finder.convert_time_to_integer(refine_data)
+		convert_price = @flight_finder.convert_price_to_integer(convert_time)
+		all_durations = @flight_finder.find_all_durations(convert_price)
 		third_leg = @flight_finder.find_third_leg(all_durations)
 
 		expect(@flight_finder.fastest_third_leg(third_leg).duration).to eq(200)
 	end
 
-it "finds total duration of indirect flights" do
+	xit "finds the fastest indirect flight" do
 		get_list = @travel_finder.get_flights(list)
 		refine_data = @travel_finder.delete_whitespace(get_list)
-		converted_list = @flight_finder.convert_time_to_integer(refine_data)
-		all_durations = @flight_finder.find_all_durations(converted_list)
+		convert_time = @flight_finder.convert_time_to_integer(refine_data)
+		convert_price = @flight_finder.convert_price_to_integer(convert_time)
+		all_durations = @flight_finder.find_all_durations(convert_price)
 		first_leg = @flight_finder.find_first_leg(all_durations)
 	  second_leg = @flight_finder.find_second_leg(all_durations)
 		third_leg = @flight_finder.find_third_leg(all_durations)
-		first_leg_duration = @flight_finder.fastest_first_leg(first_leg)
-		second_leg_duration = @flight_finder.fastest_second_leg(second_leg)
-		third_leg_duration = @flight_finder.fastest_third_leg(third_leg)
+		first_leg_fastest = @flight_finder.fastest_first_leg(first_leg)
+		second_leg_fastest = @flight_finder.fastest_second_leg(second_leg)
+		third_leg_fastest = @flight_finder.fastest_third_leg(third_leg)
 
-		expect(@flight_finder.find_total_duration(first_leg_duration, second_leg_duration, third_leg_duration)).to eq(500)
+		expect(@flight_finder.combine_indirect_flights(first_leg_fastest, second_leg_fastest, third_leg_fastest).duration).to eq(500)
 	end
+
+it "finds total duration of indirect flights" do
+		get_list = @travel_finder.get_flights(list)
+		refine_data = @travel_finder.delete_whitespace(get_list)
+		convert_time = @flight_finder.convert_time_to_integer(refine_data)
+		convert_price = @flight_finder.convert_price_to_integer(convert_time)
+		all_durations = @flight_finder.find_all_durations(convert_price)
+		first_leg = @flight_finder.find_first_leg(all_durations)
+	  second_leg = @flight_finder.find_second_leg(all_durations)
+		third_leg = @flight_finder.find_third_leg(all_durations)
+		first_leg_fastest = @flight_finder.fastest_first_leg(first_leg)
+		second_leg_fastest = @flight_finder.fastest_second_leg(second_leg)
+		third_leg_fastest = @flight_finder.fastest_third_leg(third_leg)
+
+		expect(@flight_finder.find_total_duration(first_leg_fastest, second_leg_fastest, third_leg_fastest)).to eq(300)
+	end
+
+it "finds total price of indirect flights" do
+		get_list = @travel_finder.get_flights(list)
+		refine_data = @travel_finder.delete_whitespace(get_list)
+		convert_time = @flight_finder.convert_time_to_integer(refine_data)
+		convert_price = @flight_finder.convert_price_to_integer(convert_time)
+		all_durations = @flight_finder.find_all_durations(convert_price)
+		first_leg = @flight_finder.find_first_leg(all_durations)
+	  second_leg = @flight_finder.find_second_leg(all_durations)
+		third_leg = @flight_finder.find_third_leg(all_durations)
+		first_leg_fastest = @flight_finder.fastest_first_leg(first_leg)
+		second_leg_fastest = @flight_finder.fastest_second_leg(second_leg)
+		third_leg_fastest = @flight_finder.fastest_third_leg(third_leg)
+
+		expect(@flight_finder.find_total_price(first_leg_fastest, second_leg_fastest, third_leg_fastest)).to eq(300)
+end
 
 it "compares direct flight times with indirect flight times" do
 		get_list = @travel_finder.get_flights(list)
 		refine_data = @travel_finder.delete_whitespace(get_list)
-		converted_list = @flight_finder.convert_time_to_integer(refine_data)
-		all_durations = @flight_finder.find_all_durations(converted_list)
+		convert_time = @flight_finder.convert_time_to_integer(refine_data)
+		convert_price = @flight_finder.convert_price_to_integer(convert_time)
+		all_durations = @flight_finder.find_all_durations(convert_price)
 		direct_flights = @flight_finder.find_direct_flights(all_durations)
 		direct_duration = @flight_finder.check_direct_duration(direct_flights)
 		shortest_or_cheapest = @flight_finder.shortest_or_cheapest_direct(direct_flights, direct_duration)
 		first_leg = @flight_finder.find_first_leg(all_durations)
 	  second_leg = @flight_finder.find_second_leg(all_durations)
 		third_leg = @flight_finder.find_third_leg(all_durations)
-		first_leg_duration = @flight_finder.fastest_first_leg(first_leg)
-		second_leg_duration = @flight_finder.fastest_second_leg(second_leg)
-		third_leg_duration = @flight_finder.fastest_third_leg(third_leg)
-		indirect_flight_duration = @flight_finder.find_total_duration(first_leg_duration, second_leg_duration, third_leg_duration)
+		first_leg_fastest = @flight_finder.fastest_first_leg(first_leg)
+		second_leg_fastest = @flight_finder.fastest_second_leg(second_leg)
+		third_leg_fastest = @flight_finder.fastest_third_leg(third_leg)
+		indirect_flight_duration = @flight_finder.find_total_duration(first_leg_fastest, second_leg_fastest, third_leg_fastest)
 
-		expect(@flight_finder.pick_for_jen(shortest_or_cheapest, indirect_flight_duration)).to eq(500)
+		expect(@flight_finder.pick_for_jen(shortest_or_cheapest, indirect_flight_duration).price).to eq(300)
 	end
-
 end

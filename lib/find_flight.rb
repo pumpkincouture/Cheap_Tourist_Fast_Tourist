@@ -14,6 +14,12 @@ class FindFlight
 		end
 	end
 
+	def convert_price_to_integer(convert_time)
+		convert_time.each do |flight|
+			flight.price = flight.convert_price 
+		end
+	end
+
 	def find_all_durations(converted_list)
 		converted_list.each do |flight|
 			flight.duration = flight.find_duration
@@ -59,20 +65,38 @@ class FindFlight
 	end
 
 	def fastest_second_leg(second_leg)
-		second_leg.min{|flight, other_flight| flight.duration <=> other_flight.duration }
+		return [] if second_leg == []
+		second_leg.min{|flight, other_flight| flight.duration <=> other_flight.duration } 
 	end
 
 	def fastest_third_leg(third_leg)
 		third_leg.min{|flight, other_flight| flight.duration <=> other_flight.duration }
 	end
 
+	# def combine_indirect_flights(fastest_first_leg, fastest_second_leg, fastest_third_leg)
+	# 	indirect_flight = []
+	# 	# p indirect_flight <<  
+	# 	# p indirect_flight << "#{fastest_first_leg.get_departure}" + ", " + "#{fastest_third_leg.get_arrival}"
+	# 	# # p fastest_third_leg .arrival
+	# end
+
 	def find_total_duration(fastest_first_leg, fastest_second_leg, fastest_third_leg)
-		total = fastest_first_leg.get_duration + fastest_second_leg.get_duration + fastest_third_leg.get_duration
+		unless fastest_second_leg == []
+			total_time = fastest_first_leg.get_duration + fastest_second_leg.get_duration + fastest_third_leg.get_duration
+		end
+	  total_time = fastest_first_leg.get_duration + fastest_third_leg.get_duration
+	end
+
+	def find_total_price(fastest_first_leg, fastest_second_leg, fastest_third_leg)
+		unless fastest_second_leg == []
+		  total_price = fastest_first_leg.get_price + fastest_second_leg.get_price + fastest_third_leg.get_price
+		end
+	  total_price = fastest_first_leg.get_price + fastest_third_leg.get_price
 	end
 
 	def pick_for_jen(direct_flight_pick, indirect_flight_duration)
-		p direct_flight_pick.get_duration < indirect_flight_duration.get_duration
-
+		return direct_flight_pick if direct_flight_pick.get_duration <= indirect_flight_duration
+		
 	end
 
 
