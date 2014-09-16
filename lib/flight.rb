@@ -1,6 +1,7 @@
 class Flight
 
-  attr_accessor :origin, :destination, :departure, :arrival, :price, :duration
+  attr_reader :origin, :destination
+  attr_accessor :duration, :departure, :price, :arrival
 
   def initialize(list)
   	@origin = list[0]
@@ -41,14 +42,6 @@ class Flight
 
   def lay_over_three
     @origin != "A" && @destination == "Z"
-  end
-
-  def get_origin
-    @origin
-  end
-
-  def get_destination
-    @destination
   end
 
   def get_departure

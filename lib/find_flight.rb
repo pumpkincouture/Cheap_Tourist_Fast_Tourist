@@ -1,11 +1,5 @@
 class FindFlight
 
-	# def sort_by_cheap(list)
-	# # p	sorted_list = list.sort_by(&:price)
-	# p	sorted_list = list.sort_by{|flight| flight.price.map{|f|f.price}.min}
-
-	# end
-
 	def convert_time_to_integer(flight_list)
 		converted_list = flight_list.clone
 		converted_list.each do |flight|
@@ -52,12 +46,16 @@ class FindFlight
 		length
 	end
 
-	def shortest_or_cheapest_direct(direct_flights, direct_duration)
-		shortest = direct_flights.min {|flight, other_flight| flight.duration <=> other_flight.duration }
-	  cheapest = direct_flights.min {|flight, other_flight| flight.price <=> other_flight.price }
- 
-	 	cheapest if direct_duration >= 0 
-	 	shortest
+	def shortest_or_cheapest_direct(direct_flights, direct_duration) 
+    if direct_duration >= 0
+      cheapest = direct_flights.min {|flight, other_flight| flight.price <=> other_flight.price }
+		else
+    	shortest = direct_flights.min {|flight, other_flight| flight.duration <=> other_flight.duration }
+		end
+	end
+
+	def cheapest_first_leg(fastest_first_leg, first_leg)
+		first_leg.min{|flight, other_flight| flight.price <=> other_flight.price }
 	end
 
 	def fastest_first_leg(first_leg)
@@ -65,7 +63,7 @@ class FindFlight
 	end
 
 	def fastest_second_leg(second_leg)
-		return [] if second_leg == []
+		return [] if second_leg.empty?
 		second_leg.min{|flight, other_flight| flight.duration <=> other_flight.duration } 
 	end
 
@@ -73,43 +71,36 @@ class FindFlight
 		third_leg.min{|flight, other_flight| flight.duration <=> other_flight.duration }
 	end
 
-	# def combine_indirect_flights(fastest_first_leg, fastest_second_leg, fastest_third_leg)
-	# 	indirect_flight = []
-	# 	# p indirect_flight <<  
-	# 	# p indirect_flight << "#{fastest_first_leg.get_departure}" + ", " + "#{fastest_third_leg.get_arrival}"
-	# 	# # p fastest_third_leg .arrival
-	# end
-
-	def find_total_duration(fastest_first_leg, fastest_second_leg, fastest_third_leg)
-		unless fastest_second_leg == []
-			total_time = fastest_first_leg.get_duration + fastest_second_leg.get_duration + fastest_third_leg.get_duration
+	def find_indirect_duration(fastest_first_leg, fastest_second_leg, fastest_third_leg)			
+		if fastest_second_leg.empty?
+			total_time = fastest_first_leg.get_duration + fastest_third_leg.get_duration
+		else
+			total_time_with_second_leg = fastest_first_leg.get_duration + fastest_second_leg.get_duration + fastest_third_leg.get_duration
 		end
-	  total_time = fastest_first_leg.get_duration + fastest_third_leg.get_duration
 	end
 
 	def find_total_price(fastest_first_leg, fastest_second_leg, fastest_third_leg)
-		unless fastest_second_leg == []
-		  total_price = fastest_first_leg.get_price + fastest_second_leg.get_price + fastest_third_leg.get_price
+		if fastest_second_leg.empty?
+		  total_price = fastest_first_leg.get_price + fastest_third_leg.get_price
+		 else
+		 	total_price = fastest_first_leg.get_price + fastest_second_leg.get_price + fastest_third_leg.get_price
 		end
-	  total_price = fastest_first_leg.get_price + fastest_third_leg.get_price
 	end
 
-	def pick_for_jen(direct_flight_pick, indirect_flight_duration)
-		return direct_flight_pick if direct_flight_pick.get_duration <= indirect_flight_duration
-		
+	def combine_indirect_flights(first_leg, second_leg, total_price)  
+		"#{first_leg.get_departure} " +  "#{second_leg.get_arrival} " + "#{total_price}"
+	end
+
+	def pick_for_jen(direct_flight_pick, indirect_flight_duration, indirect_flight)
+		if direct_flight_pick.get_duration <= indirect_flight_duration
+			direct_flight_pick
+		else
+			indirect_flight
+		end
+	end
+
+	def pick_for_steve()
 	end
 
 
-	# def pick_cheaper_flight(direct_flights, )
-
-	# def pick_shorter_flight()
-	# end
-	# def find_cheap_flight(list)
-
-	# 		p list[0].compare_cheap(list[2])
-	# 	# end		
-	# end
-
-	# # def find_fast_flight(list)
-	# end
 end
