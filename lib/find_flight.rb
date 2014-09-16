@@ -54,10 +54,6 @@ class FindFlight
 		end
 	end
 
-	def cheapest_first_leg(fastest_first_leg, first_leg)
-		first_leg.min{|flight, other_flight| flight.price <=> other_flight.price }
-	end
-
 	def fastest_first_leg(first_leg)
 		first_leg.min{|flight, other_flight| flight.duration <=> other_flight.duration }
 	end
@@ -69,6 +65,19 @@ class FindFlight
 
 	def fastest_third_leg(third_leg)
 		third_leg.min{|flight, other_flight| flight.duration <=> other_flight.duration }
+	end
+
+	def cheapest_and_fastest_first_leg(fastest_first_leg, first_leg)
+		first_leg.min{|flight, other_flight| flight.price <=> other_flight.price } && fastest_first_leg
+	end
+
+	def cheapest_and_fastest_second_leg(fastest_second_leg, second_leg)
+    return [] if second_leg.empty?
+    second_leg.min{|flight, other_flight| flight.price <=> other_flight.price } && fastest_second_leg
+	end
+
+	def cheapest_and_fastest_third_leg(fastest_third_leg, third_leg)
+		third_leg.min{|flight, other_flight| flight.price <=> other_flight.price } && fastest_third_leg
 	end
 
 	def find_indirect_duration(fastest_first_leg, fastest_second_leg, fastest_third_leg)			
@@ -99,8 +108,11 @@ class FindFlight
 		end
 	end
 
-	def pick_for_steve()
+	def pick_for_steve(direct_flight_pick, indirect_flight_price, indirect_flight)
+		if direct_flight_pick.get_price <= indirect_flight_price
+			direct_flight_pick
+		else
+			indirect_flight
+		end
 	end
-
-
 end

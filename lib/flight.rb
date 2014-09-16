@@ -20,7 +20,6 @@ class Flight
   end
 
   def convert_price
-    # new_price = @price.delete(".").to_i
     @price.tr(',','').to_i 
   end
 
@@ -63,29 +62,4 @@ class Flight
   def find_same_duration(other_flight)
     @duration == other_flight.duration
   end
-
-  # def find_duration_difference(first_leg)
-  #   @arrival - first_leg.departure
-  # end
-  
-  # def find_fast_flight
-  #   @arrival - @departure <= 16.00
-  # end
-
-  # def find_other_cheap(other_flight)
-  #   @price == other_flight.price 
-  # end
-
-  # def check_origin(other_flight)
-  #   @origin || other_flight.origin == "A"
-  # end
-
-  # def check_destination(other_flight)
-  #   @destination || other_flight.destination == "Z"
-  # end
-
-  # def compare_fast(other_flight)
-
-  
-  # end
 end
