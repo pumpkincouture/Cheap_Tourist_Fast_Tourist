@@ -1,11 +1,7 @@
-require '../lib/find_flight.rb'
-require '../lib/flight.rb'
-require '../lib/travel_finder.rb'
-require_relative 'flight_mock'
 require_relative 'spec_helper'
 
 describe "FindFlight" do
-  list = '../lib/Simple-input.csv'
+  list = '../data/Simple-input.csv'
 	
 	before :each do
 		@flight_finder = FindFlight.new
