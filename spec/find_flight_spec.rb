@@ -82,28 +82,25 @@ describe "FindFlight" do
 		expect(@flight_finder.fastest_third_leg(third_leg).duration).to eq(2.0)
 	end
 
-	it "finds cheapest and fastest first leg" do
+	it "finds cheapest first leg" do
     converted_list = @flight_finder.find_all_durations(@flight_finder.convert_price_to_integer(@travel_finder.get_flights(list)))
 		first_leg = @flight_finder.find_first_leg(converted_list)
-		first_leg_fastest = @flight_finder.fastest_first_leg(@flight_finder.find_first_leg(converted_list))
 
-		expect(@flight_finder.cheapest_and_fastest_first_leg(first_leg_fastest, first_leg).price).to eq(100)
+		expect(@flight_finder.cheapest_first_leg(first_leg).price).to eq(100)
 	end
 
-	it "finds cheapest and fastest second leg" do
+	it "finds cheapest second leg" do
     converted_list = @flight_finder.find_all_durations(@flight_finder.convert_price_to_integer(@travel_finder.get_flights(list)))
 		second_leg = @flight_finder.find_second_leg(converted_list)
-		second_leg_fastest = @flight_finder.fastest_second_leg(@flight_finder.find_second_leg(converted_list))
 
-		expect(@flight_finder.cheapest_and_fastest_second_leg(second_leg_fastest, second_leg)).to eq([])
+		expect(@flight_finder.cheapest_second_leg(second_leg)).to eq([])
 	end
 
-	it "finds cheapest and fastest third leg" do
+	it "finds cheapest third leg" do
     converted_list = @flight_finder.find_all_durations(@flight_finder.convert_price_to_integer(@travel_finder.get_flights(list)))
 		third_leg = @flight_finder.find_third_leg(converted_list)
-		third_leg_fastest = @flight_finder.fastest_third_leg(@flight_finder.find_third_leg(converted_list))
 
-		expect(@flight_finder.cheapest_and_fastest_third_leg(third_leg_fastest, third_leg).price).to eq(100)
+		expect(@flight_finder.cheapest_third_leg(third_leg).price).to eq(75)
 	end
 
   it "adds indirect flights" do
@@ -149,13 +146,13 @@ describe "FindFlight" do
     converted_list = @flight_finder.find_all_durations(@flight_finder.convert_price_to_integer(@travel_finder.get_flights(list)))
 		direct_flights = @flight_finder.find_direct_flights(converted_list)
 		direct_flight_pick = @flight_finder.shortest_or_cheapest_direct(direct_flights, @flight_finder.check_direct_duration(direct_flights))
-		first_leg_fastest = @flight_finder.fastest_first_leg(@flight_finder.find_first_leg(converted_list))
-		second_leg_fastest = @flight_finder.fastest_second_leg(@flight_finder.find_second_leg(converted_list))
-		third_leg_fastest = @flight_finder.fastest_third_leg(@flight_finder.find_third_leg(converted_list))
-		indirect_flight_duration = @flight_finder.find_indirect_duration(@flight_finder.cheapest_and_fastest_first_leg(first_leg_fastest, @flight_finder.find_first_leg(converted_list)), @flight_finder.cheapest_and_fastest_second_leg(second_leg_fastest, @flight_finder.find_second_leg(converted_list)), @flight_finder.cheapest_and_fastest_third_leg(third_leg_fastest, @flight_finder.find_third_leg(converted_list)))
-		total_price = @flight_finder.find_total_price(@flight_finder.cheapest_and_fastest_first_leg(first_leg_fastest, @flight_finder.find_first_leg(converted_list)), @flight_finder.cheapest_and_fastest_second_leg(second_leg_fastest, @flight_finder.find_second_leg(converted_list)), @flight_finder.cheapest_and_fastest_third_leg(third_leg_fastest, @flight_finder.find_third_leg(converted_list)))
-		combined_itinerary = @flight_finder.combine_indirect_flights(@flight_finder.cheapest_and_fastest_first_leg(first_leg_fastest, @flight_finder.find_first_leg(converted_list)), @flight_finder.cheapest_and_fastest_third_leg(third_leg_fastest, @flight_finder.find_third_leg(converted_list)), total_price)
+		cheap_first_leg = @flight_finder.cheapest_first_leg(@flight_finder.find_first_leg(converted_list))
+		cheap_second_leg = @flight_finder.cheapest_second_leg(@flight_finder.find_second_leg(converted_list))
+		cheap_third_leg = @flight_finder.cheapest_third_leg(@flight_finder.find_third_leg(converted_list))
+		indirect_flight_duration = @flight_finder.find_indirect_duration(cheap_first_leg, cheap_second_leg, cheap_third_leg)
+		total_price = @flight_finder.find_total_price(cheap_first_leg, cheap_second_leg, cheap_third_leg)
+		combined_itinerary = @flight_finder.combine_indirect_flights(cheap_first_leg, cheap_third_leg, total_price)
 
-		expect(@flight_finder.pick_for_steve(direct_flight_pick, total_price, combined_itinerary)).to eq("09:00 13:30 200")
+		expect(@flight_finder.pick_for_steve(direct_flight_pick, total_price, combined_itinerary)).to eq("09:00 16:30 175")
 	end	
 end

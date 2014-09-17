@@ -13,14 +13,6 @@ class Flight
   	@price = list[4]
   end
 
-  # def convert_departure
-  #   @departure.delete(":").to_i
-  # end
-
-  # def convert_arrival
-  #   @arrival.delete(":").to_i
-  # end
-
   def convert_price
     @price.tr(',','').to_i 
   end
