@@ -1,15 +1,8 @@
 class FindFlight
 
-	def convert_time_to_integer(flight_list)
-		converted_list = flight_list.clone
-		converted_list.each do |flight|
-			flight.departure = flight.convert_departure
-			flight.arrival = flight.convert_arrival
-		end
-	end
-
-	def convert_price_to_integer(convert_time)
-		convert_time.each do |flight|
+	def convert_price_to_integer(flight_list)
+		new_list = flight_list.clone
+		new_list.each do |flight|
 			flight.price = flight.convert_price 
 		end
 	end
@@ -102,7 +95,7 @@ class FindFlight
 
 	def pick_for_jen(direct_flight_pick, indirect_flight_duration, indirect_flight)
 		if direct_flight_pick.get_duration <= indirect_flight_duration
-			direct_flight_pick
+			p direct_flight_pick
 		else
 			indirect_flight
 		end
@@ -112,7 +105,7 @@ class FindFlight
 		if direct_flight_pick.get_price <= indirect_flight_price
 			direct_flight_pick
 		else
-			indirect_flight
+			p indirect_flight
 		end
 	end
 end
