@@ -77,7 +77,7 @@ class FindFlight
 	end
 
 	def find_indirect_duration(first_leg, second_leg, third_leg)			
-		if second_leg.empty?
+		if second_leg == []
 			total_time = first_leg.get_duration + third_leg.get_duration
 		else
 			total_time_with_second_leg = first_leg.get_duration + second_leg.get_duration + third_leg.get_duration
@@ -85,7 +85,7 @@ class FindFlight
 	end
 
 	def find_total_price(first_leg, second_leg, third_leg)
-		if second_leg.empty?
+		if second_leg == []
 		  total_price = first_leg.get_price + third_leg.get_price
 		 else
 		 	total_price = first_leg.get_price + second_leg.get_price + third_leg.get_price

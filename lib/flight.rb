@@ -32,7 +32,7 @@ class Flight
   end
 
   def lay_over_two
-    @origin != "A" && @destination != "Z"
+    @origin == "B" && @destination == "Z" || @origin != "A" && @destination != "B" && @destination != "Z"
   end
 
   def lay_over_three
