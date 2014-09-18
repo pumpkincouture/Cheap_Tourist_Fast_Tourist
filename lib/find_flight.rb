@@ -69,7 +69,7 @@ class FindFlight
 
 	def cheapest_second_leg(second_leg)
     return [] if second_leg.empty?
-    second_leg.min{|flight, other_flight| flight.price <=> other_flight.price }
+   p second_leg.min{|flight, other_flight| flight.price <=> other_flight.price }
 	end
 
 	def cheapest_third_leg(third_leg)
@@ -79,6 +79,10 @@ class FindFlight
 	def find_indirect_duration(first_leg, second_leg, third_leg)			
 		if second_leg == []
 			total_time = first_leg.get_duration + third_leg.get_duration
+		elsif second_leg == third_leg
+			total_time_with_second_leg = first_leg.get_duration + second_leg.get_duration
+		elsif third_leg.get_departure == "B" && third_leg.get_arrival == "Z"
+			total_time = first_leg.get_duration + third_leg.get_duration
 		else
 			total_time_with_second_leg = first_leg.get_duration + second_leg.get_duration + third_leg.get_duration
 		end
@@ -87,6 +91,10 @@ class FindFlight
 	def find_total_price(first_leg, second_leg, third_leg)
 		if second_leg == []
 		  total_price = first_leg.get_price + third_leg.get_price
+		 elsif second_leg == third_leg
+		 	total_price = first_leg.get_price + second_leg.get_price
+		 elsif third_leg.get_departure == "B" && third_leg.get_arrival == "Z"
+		 	total_price = first_leg.get_price + third_leg.get_price
 		 else
 		 	total_price = first_leg.get_price + second_leg.get_price + third_leg.get_price
 		end

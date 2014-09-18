@@ -37,7 +37,7 @@ describe "FindFlight" do
 	it "returns second leg" do
     converted_list = @flight_finder.find_all_durations(@flight_finder.convert_price_to_integer(@travel_finder.get_flights(list)))
 
-		expect(@flight_finder.find_second_leg(converted_list)).to eq([])
+		expect(@flight_finder.find_second_leg(converted_list)[0].price).to eq(100)
 	end
 
 	it "returns third leg" do
@@ -72,7 +72,7 @@ describe "FindFlight" do
     converted_list = @flight_finder.find_all_durations(@flight_finder.convert_price_to_integer(@travel_finder.get_flights(list)))
 		second_leg = @flight_finder.find_second_leg(converted_list)
 	
-		expect(@flight_finder.fastest_second_leg(second_leg)).to eq([])
+		expect(@flight_finder.fastest_second_leg(second_leg).price).to eq(100)
 	end
 
   it "finds fastest third leg" do
@@ -93,7 +93,7 @@ describe "FindFlight" do
     converted_list = @flight_finder.find_all_durations(@flight_finder.convert_price_to_integer(@travel_finder.get_flights(list)))
 		second_leg = @flight_finder.find_second_leg(converted_list)
 
-		expect(@flight_finder.cheapest_second_leg(second_leg)).to eq([])
+		expect(@flight_finder.cheapest_second_leg(second_leg).price).to eq(75)
 	end
 
 	it "finds cheapest third leg" do
@@ -109,7 +109,7 @@ describe "FindFlight" do
 		second_leg_fastest = @flight_finder.fastest_second_leg(@flight_finder.find_second_leg(converted_list))
 		third_leg_fastest = @flight_finder.fastest_third_leg(@flight_finder.find_third_leg(converted_list))
 
-		expect(@flight_finder.find_indirect_duration(first_leg_fastest, second_leg_fastest, third_leg_fastest)).to eq(3.0)
+		expect(@flight_finder.find_indirect_duration(first_leg_fastest, second_leg_fastest, third_leg_fastest)).to eq(5.0)
 	end
 
 	it "calculcates price of indirect flights" do
