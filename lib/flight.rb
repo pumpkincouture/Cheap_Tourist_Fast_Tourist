@@ -1,3 +1,5 @@
+require 'time'
+
 class Flight
 
   attr_reader :origin, :destination
@@ -11,20 +13,14 @@ class Flight
   	@price = list[4]
   end
 
-  def convert_departure
-    @departure.delete(":").to_i
-  end
-
-  def convert_arrival
-    @arrival.delete(":").to_i
-  end
-
   def convert_price
     @price.tr(',','').to_i 
   end
 
   def find_duration
-    @arrival - @departure
+    minute = 60
+    hour = 60.0
+    (Time.parse(@arrival) - Time.parse(@departure)) / minute / hour
   end
 
   def no_lay_over
@@ -36,7 +32,7 @@ class Flight
   end
 
   def lay_over_two
-    @origin != "A" && @destination != "Z"
+    @origin == "B" && @destination == "Z" || @origin != "A" && @destination != "B" && @destination != "Z"
   end
 
   def lay_over_three

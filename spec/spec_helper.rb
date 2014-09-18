@@ -1,3 +1,7 @@
+require '../lib/find_flight.rb'
+require '../lib/flight.rb'
+require '../lib/travel_finder.rb'
+require_relative 'flight_mock'
 
 RSpec.configure do |config|
   config.failure_color = :red
