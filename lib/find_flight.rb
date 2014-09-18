@@ -69,7 +69,7 @@ class FindFlight
 
 	def cheapest_second_leg(second_leg)
     return [] if second_leg.empty?
-   p second_leg.min{|flight, other_flight| flight.price <=> other_flight.price }
+    second_leg.min{|flight, other_flight| flight.price <=> other_flight.price }
 	end
 
 	def cheapest_third_leg(third_leg)

@@ -1,7 +1,7 @@
 require_relative 'spec_helper'
 
 describe "FindFlight" do
-  list = '../data/Simple-input.csv'
+  list = '../data/test-cases.csv'
 	
 	before :each do
 		@flight_finder = FindFlight.new
@@ -109,7 +109,7 @@ describe "FindFlight" do
 		second_leg_fastest = @flight_finder.fastest_second_leg(@flight_finder.find_second_leg(converted_list))
 		third_leg_fastest = @flight_finder.fastest_third_leg(@flight_finder.find_third_leg(converted_list))
 
-		expect(@flight_finder.find_indirect_duration(first_leg_fastest, second_leg_fastest, third_leg_fastest)).to eq(5.0)
+		expect(@flight_finder.find_indirect_duration(first_leg_fastest, second_leg_fastest, third_leg_fastest)).to eq(3.0)
 	end
 
 	it "calculcates price of indirect flights" do
