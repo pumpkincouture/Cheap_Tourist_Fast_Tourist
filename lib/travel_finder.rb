@@ -9,12 +9,11 @@ class TravelFinder
 	end
 
   def find_flights!(file)
-    get_list = get_flights(file)
-    direct_flight = direct_flight_pick(get_list)
+    flight_list = get_flights(file)
+    converted_list = @flight_finder.convert_price_to_integer(flight_list)
 
-    display_steve(@flight_finder.pick_for_steve(direct_flight, cheapest_indirect_price(get_list), cheapest_indirect_itinerary(get_list)))
-    display_jen(@flight_finder.pick_for_jen(direct_flight, get_fastest_indirect(get_list), fastest_indirect_itinerary(get_list)))
-
+    display_steve(steve_pick(converted_list))
+    display_jen(jen_pick(converted_list))
   end
 
   def display_steve(steves_pick)
@@ -33,10 +32,18 @@ class TravelFinder
     end
   end
 
+  def steve_pick(list)
+    @flight_finder.pick_for_steve(direct_flight_pick(list), cheapest_indirect_price(list), cheapest_indirect_itinerary(list))
+  end
+
+  def jen_pick(list)
+    @flight_finder.pick_for_jen(direct_flight_pick(list), get_fastest_indirect(list), fastest_indirect_itinerary(list))
+  end
+
   def direct_flight_pick(list)
-    converted_list = @flight_finder.find_all_durations(@flight_finder.convert_price_to_integer(list))
+    converted_list = @flight_finder.find_all_durations(list)
     direct_flights = @flight_finder.find_direct_flights(converted_list)
-    compare_direct = @flight_finder.shortest_or_cheapest_direct(direct_flights, @flight_finder.check_direct_duration(direct_flights))
+    direct_flight_choice = @flight_finder.shortest_or_cheapest_direct(direct_flights, @flight_finder.check_direct_duration(direct_flights))
   end
 
   def get_fastest_indirect(list)

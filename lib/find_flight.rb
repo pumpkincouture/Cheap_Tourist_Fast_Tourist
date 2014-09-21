@@ -3,7 +3,7 @@ class FindFlight
 	def convert_price_to_integer(flight_list)
 		new_list = flight_list.clone
 		new_list.each do |flight|
-			flight.price = flight.convert_price 
+		  flight.price = flight.convert_price 
 		end
 	end
 
