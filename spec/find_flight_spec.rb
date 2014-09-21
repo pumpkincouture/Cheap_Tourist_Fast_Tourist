@@ -64,6 +64,15 @@ describe "FindFlight" do
 		expect(@flight_finder.delete_nil(gather_legs)[0][1]).to_not eq(nil) 
 	end
 
+	it "creates new itinerary objects" do
+		get_list = @travel_finder.get_flights(list)
+    converted_list = @flight_finder.find_all_durations(@flight_finder.convert_price_to_integer(@travel_finder.get_flights(list)))
+		gather_legs = @flight_finder.gather_legs(@flight_finder.find_first_leg(converted_list), @flight_finder.find_second_leg(converted_list), @flight_finder.find_third_leg(converted_list))
+
+		expect(@flight_finder.create_itinerary(gather_legs)[0][1].price).to eq(200) 
+	end
+
+
 	xit "picks for Jen" do
     converted_list = @flight_finder.find_all_durations(@flight_finder.convert_price_to_integer(@travel_finder.get_flights(list)))
 		direct_flights = @flight_finder.find_direct_flights(converted_list)
