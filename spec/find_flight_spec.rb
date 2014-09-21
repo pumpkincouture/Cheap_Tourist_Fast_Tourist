@@ -37,7 +37,7 @@ describe "FindFlight" do
 	it "returns second leg" do
     converted_list = @flight_finder.find_all_durations(@flight_finder.convert_price_to_integer(@travel_finder.get_flights(list)))
 
-		expect(@flight_finder.find_second_leg(converted_list)[0].price).to eq(100)
+		expect(@flight_finder.find_second_leg(converted_list)).to eq([])
 	end
 
 	it "returns third leg" do
@@ -53,7 +53,15 @@ describe "FindFlight" do
 		second_leg = @flight_finder.find_second_leg(converted_list)
 		third_leg = @flight_finder.find_third_leg(converted_list)
 
-		expect(@flight_finder.gather_legs(first_leg, second_leg, third_leg)).to be true
+		expect(@flight_finder.gather_legs(first_leg, second_leg, third_leg)[0][1]).to eq(nil) 
+	end
+
+	it "checks for nil" do
+		get_list = @travel_finder.get_flights(list)
+    converted_list = @flight_finder.find_all_durations(@flight_finder.convert_price_to_integer(@travel_finder.get_flights(list)))
+		gather_legs = @flight_finder.gather_legs(@flight_finder.find_first_leg(converted_list), @flight_finder.find_second_leg(converted_list), @flight_finder.find_third_leg(converted_list))
+
+		expect(@flight_finder.delete_nil(gather_legs)[0][1]).to_not eq(nil) 
 	end
 
 	xit "picks for Jen" do
