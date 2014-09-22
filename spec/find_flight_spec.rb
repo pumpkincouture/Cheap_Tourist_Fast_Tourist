@@ -7,6 +7,7 @@ describe "FindFlight" do
 		@flight_finder = FindFlight.new
 		@travel_finder = TravelFinder.new(@flight_finder)
 		@flight_mock = FlightMock.new
+		@flight_builder = FlightBuilderMock.new
 	end
   
 	it "converts price" do
@@ -68,10 +69,20 @@ describe "FindFlight" do
 		get_list = @travel_finder.get_flights(list)
     converted_list = @flight_finder.find_all_durations(@flight_finder.convert_price_to_integer(@travel_finder.get_flights(list)))
 		gather_legs = @flight_finder.gather_legs(@flight_finder.find_first_leg(converted_list), @flight_finder.find_second_leg(converted_list), @flight_finder.find_third_leg(converted_list))
+		delete_nil = @flight_finder.delete_nil(gather_legs)
 
-		expect(@flight_finder.create_itinerary(gather_legs)[0][1].price).to eq(200) 
+		expect(@flight_finder.create_itinerary(delete_nil)[0].destination).to eq("Z") 
 	end
 
+	it "calculates flight prices" do
+		get_list = @travel_finder.get_flights(list)
+    converted_list = @flight_finder.find_all_durations(@flight_finder.convert_price_to_integer(@travel_finder.get_flights(list)))
+		gather_legs = @flight_finder.gather_legs(@flight_finder.find_first_leg(converted_list), @flight_finder.find_second_leg(converted_list), @flight_finder.find_third_leg(converted_list))
+		delete_nil = @flight_finder.delete_nil(gather_legs)
+		itinerary = @flight_finder.create_itinerary(delete_nil)
+
+		expect(@flight_finder.find_prices(itinerary)[0].price).to eq(200) 
+	end
 
 	xit "picks for Jen" do
     converted_list = @flight_finder.find_all_durations(@flight_finder.convert_price_to_integer(@travel_finder.get_flights(list)))

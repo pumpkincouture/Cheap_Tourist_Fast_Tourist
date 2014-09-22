@@ -50,12 +50,25 @@ class FindFlight
 		end
 	end
 
+	def find_prices(flights_array)
+		flights_array.each do |array|
+			p array.price
+			array.calculate_total_duration
+	end
+
 	def create_itinerary(flights_array)
 		itineraries = []
 		flights_array.each do |array|
 			itineraries << FlightBuilder.new(array)
 		end
 		itineraries
+	end
+
+	def find_prices(flights_array)
+		flights_array.each do |array|
+			p array.price
+			array.calculate_total_duration
+		end
 
 	end
 

@@ -8,12 +8,12 @@ class FlightBuilder
 		@destination = array[-1].destination
 	end
 
-	def calculate_total_duration(array)
-		array.total_duration = 0
-		 array.each {|flight| array.total_duration += flight.duration}
+	def calculate_total_duration
+		total_duration = 0
+		total_duration += @duration
 	end
 
-	def calculate_total_price(array)
+	def calculate_total_price
 		array.total_price = 0
 		array.each {|flight| array.total_price += flight.price}
 	end
